@@ -1,0 +1,63 @@
+# =========================
+# Global ignores
+# =========================
+
+# Ignore all .env files (frontend and backend)
+**/.env
+**/.env.*
+
+# Ignore OS / editor junk
+.DS_Store
+Thumbs.db
+*.log
+
+# Ignore local environment settings
+.vscode/
+.idea/
+
+# Ignore coverage reports
+coverage/
+
+# =========================
+# Frontend (React)
+# =========================
+/frontend/node_modules/
+/frontend/build/
+/frontend/dist/
+
+# Frontend test output
+/frontend/coverage/
+/frontend/.eslintcache
+
+# Optional: Ignore React cache
+/frontend/.cache/
+
+# =========================
+# Backend (Node.js/Express)
+# =========================
+/backend/node_modules/
+/backend/dist/
+/backend/build/
+
+# Backend logs and temp files
+/backend/logs/
+backend/debug.log
+backend/npm-debug.log*
+
+# PM2 logs (if using PM2)
+/backend/pids
+/backend/*.pid
+
+# Database / local development files (optional)
+/backend/data/
+*.sqlite
+*.sqlite3
+*.db
+*.bak
+
+# =========================
+# Other
+# =========================
+
+# Optional: ignore .env in root if you add one later
+/.env
