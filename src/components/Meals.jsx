@@ -1,6 +1,9 @@
+import { useContext } from 'react';
 import Button from './Button';
+import { CartContext } from '../store/food-cart-context';
 
-export default function Meals({ meals, isLoading }) {
+export default function Meals() {
+  const { meals, isLoading, addItemtoCart } = useContext(CartContext);
   const dollarPrice = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -26,7 +29,10 @@ export default function Meals({ meals, isLoading }) {
                   <p className="meal-item-description">{meal.description}</p>
                 </div>
                 <p className="meal-item-actions">
-                  <Button displayText="Add to Cart" />
+                  <Button
+                    displayText="Add to Cart"
+                    onClick={() => addItemtoCart(meal.id)}
+                  />
                 </p>
               </article>
             </li>
