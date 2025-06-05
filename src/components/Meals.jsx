@@ -31,7 +31,7 @@ export default function Meals() {
                 <p className="meal-item-actions">
                   <Button
                     displayText="Add to Cart"
-                    onClick={() => addItemtoCart(meal.id)}
+                    onClick={() => addItemtoCart(meal)}
                   />
                 </p>
               </article>
