@@ -93,9 +93,9 @@ export default function CartContextProvider({ children }) {
   const contextValue = {
     meals: availableMeals,
     isFetching: isFetching,
-    cartModalIsOpen: cartModalIsOpen,
+    // cartModalIsOpen: cartModalIsOpen,
     addItemtoCart: addItemToCart,
-    handleOpenCart: handleOpenCart,
+    // handleOpenCart: handleOpenCart,
   };
 
   return (
