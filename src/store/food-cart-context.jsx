@@ -5,6 +5,7 @@ export const CartContext = createContext({
   items: [],
   addItemtoCart: () => {},
   updateItemQuantity: () => {},
+  handleOpenCart: () => {},
 });
 
 // might still need an analogous function that gets saved order
@@ -92,7 +93,9 @@ export default function CartContextProvider({ children }) {
   const contextValue = {
     meals: availableMeals,
     isFetching: isFetching,
+    cartModalIsOpen: cartModalIsOpen,
     addItemtoCart: addItemToCart,
+    handleOpenCart: handleOpenCart,
   };
 
   return (
