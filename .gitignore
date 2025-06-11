@@ -21,16 +21,16 @@ coverage/
 # =========================
 # Frontend (React)
 # =========================
-/frontend/node_modules/
-/frontend/build/
-/frontend/dist/
+node_modules/
+build/
+dist/
 
 # Frontend test output
-/frontend/coverage/
-/frontend/.eslintcache
+coverage/
+.eslintcache
 
 # Optional: Ignore React cache
-/frontend/.cache/
+.cache/
 
 # =========================
 # Backend (Node.js/Express)
