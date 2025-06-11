@@ -3,24 +3,14 @@ import { fetchAvailableMeals } from '../http';
 
 export const CartContext = createContext({
   items: [],
+  isFetching: Boolean,
   addItemtoCart: () => {},
-  updateItemQuantity: () => {},
+  removeItemFromCart: () => {},
+  cartTotal: Number,
+  cartModalIsOpen: Boolean,
   handleOpenCart: () => {},
+  handleCloseCart: () => {},
 });
-
-// might still need an analogous function that gets saved order
-// async function getMeals() {
-//   try {
-//     const meals = await fetchAvailableMeals();
-//     console.log(meals);
-//     return {
-//       items: [],
-//       availableMeals: meals,
-//     };
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
 
 function foodCartReducer(state, action) {
   if (action.type === 'ADD_ITEM') {
@@ -51,18 +41,38 @@ function foodCartReducer(state, action) {
       items: updatedItems,
     };
   }
+  if (action.type === 'REMOVE_ITEM') {
+    const updatedItems = [...state.items];
+
+    const existingCartItemIndex = updatedItems.findIndex(
+      (orderItem) => orderItem.id === action.payload.id
+    );
+
+    const existingCartItem = updatedItems[existingCartItemIndex];
+    if (existingCartItem.quantity > 1) {
+      const updatedItem = {
+        ...existingCartItem,
+        quantity: existingCartItem.quantity - 1,
+      };
+      updatedItems[existingCartItemIndex] = updatedItem;
+    } else {
+      updatedItems.splice(existingCartItemIndex, 1);
+    }
+
+    return {
+      items: updatedItems,
+    };
+  }
 }
 
 export default function CartContextProvider({ children }) {
   const [isFetching, setIsFetching] = useState(false);
   const [availableMeals, setAvailableMeals] = useState([]);
-  const [foodCartState, foodCartDispatch] = useReducer(
-    foodCartReducer,
-    {
-      items: [],
-    }
-    // getMeals
-  );
+  const [cartModalIsOpen, setCartModalIsOpen] = useState(false);
+  const [foodCartState, foodCartDispatch] = useReducer(foodCartReducer, {
+    items: [],
+  });
+  const [cartTotal, setCartTotal] = useState(0);
 
   useEffect(() => {
     async function getMeals() {
@@ -90,12 +100,39 @@ export default function CartContextProvider({ children }) {
     });
   }
 
+  function removeItemFromCart(meal) {
+    foodCartDispatch({
+      type: 'REMOVE_ITEM',
+      payload: meal,
+    });
+  }
+
+  function handleOpenCart() {
+    setCartModalIsOpen(true);
+  }
+
+  function handleCloseCart() {
+    setCartModalIsOpen(false);
+  }
+
+  useEffect(() => {
+    setCartTotal(
+      foodCartState.items.reduce((total, item) => {
+        return total + Number(item.price) * item.quantity;
+      }, 0)
+    );
+  }, [foodCartState.items]);
+
   const contextValue = {
     meals: availableMeals,
     isFetching: isFetching,
-    // cartModalIsOpen: cartModalIsOpen,
+    items: foodCartState.items,
     addItemtoCart: addItemToCart,
-    // handleOpenCart: handleOpenCart,
+    removeItemFromCart: removeItemFromCart,
+    cartTotal: cartTotal,
+    cartModalIsOpen: cartModalIsOpen,
+    handleOpenCart: handleOpenCart,
+    handleCloseCart: handleCloseCart,
   };
 
   return (

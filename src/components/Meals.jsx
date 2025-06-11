@@ -1,18 +1,14 @@
 import { useContext } from 'react';
 import Button from './Button';
 import { CartContext } from '../store/food-cart-context';
+import { dollarPrice } from '../util/dollarPrice';
 
 export default function Meals() {
   const { meals, isLoading, addItemtoCart } = useContext(CartContext);
-  const dollarPrice = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  });
 
   return (
     <main id="meals">
       {!isLoading &&
-        // meals.length > 0 &&
         meals.map((meal) => {
           return (
             <li key={meal.id} className="meal-item">
