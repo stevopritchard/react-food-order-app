@@ -4,18 +4,33 @@ import { CartContext } from '../store/food-cart-context';
 import Modal from './Modal';
 import Cart from './Cart';
 import Button from './Button';
+import Checkout from './Checkout';
 
 export default function Header() {
-  const { items, cartModalIsOpen, handleOpenCart, handleCloseCart } =
-    useContext(CartContext);
+  const {
+    items,
+    cartModalIsOpen,
+    handleOpenCart,
+    handleCloseCart,
+    checkoutModalIsOpen,
+    handleOpenCheckout,
+    handleCloseCheckout,
+  } = useContext(CartContext);
 
-  let modalActions = <button className="text-button">Close</button>;
+  let cartModalActions = <button className="text-button">Close</button>;
+
+  const checkoutModalActions = (
+    <>
+      <button className="text-button">Close</button>
+      <Button displayText="Submit Order" onClick={handleCloseCheckout} />
+    </>
+  );
 
   if (items.length > 0) {
-    modalActions = (
+    cartModalActions = (
       <>
         <button className="text-button">Close</button>
-        <Button displayText="Go to Checkout" onClick={handleCloseCart} />
+        <Button displayText="Go to Checkout" onClick={handleOpenCheckout} />
       </>
     );
   }
@@ -24,10 +39,17 @@ export default function Header() {
       <Modal
         open={cartModalIsOpen}
         title="Your Cart"
-        actions={modalActions}
+        actions={cartModalActions}
         onClose={handleCloseCart}
       >
         <Cart />
+      </Modal>
+      <Modal
+        open={checkoutModalIsOpen}
+        title="Checkout"
+        actions={checkoutModalActions}
+      >
+        <Checkout />
       </Modal>
       <header id="main-header">
         <h1 id="title">

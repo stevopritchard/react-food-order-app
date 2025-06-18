@@ -10,6 +10,9 @@ export const CartContext = createContext({
   cartModalIsOpen: Boolean,
   handleOpenCart: () => {},
   handleCloseCart: () => {},
+  checkoutModalIsOpen: Boolean,
+  handleOpenCheckout: () => {},
+  handleCloseCheckout: () => {},
 });
 
 function foodCartReducer(state, action) {
@@ -69,6 +72,7 @@ export default function CartContextProvider({ children }) {
   const [isFetching, setIsFetching] = useState(false);
   const [availableMeals, setAvailableMeals] = useState([]);
   const [cartModalIsOpen, setCartModalIsOpen] = useState(false);
+  const [checkoutModalIsOpen, setCheckoutModalIsOpen] = useState(false);
   const [foodCartState, foodCartDispatch] = useReducer(foodCartReducer, {
     items: [],
   });
@@ -115,6 +119,15 @@ export default function CartContextProvider({ children }) {
     setCartModalIsOpen(false);
   }
 
+  function handleOpenCheckout() {
+    setCartModalIsOpen(false);
+    setCheckoutModalIsOpen(true);
+  }
+
+  function handleCloseCheckout() {
+    setCheckoutModalIsOpen(false);
+  }
+
   useEffect(() => {
     setCartTotal(
       foodCartState.items.reduce((total, item) => {
@@ -133,6 +146,9 @@ export default function CartContextProvider({ children }) {
     cartModalIsOpen: cartModalIsOpen,
     handleOpenCart: handleOpenCart,
     handleCloseCart: handleCloseCart,
+    checkoutModalIsOpen: checkoutModalIsOpen,
+    handleOpenCheckout: handleOpenCheckout,
+    handleCloseCheckout: handleCloseCheckout,
   };
 
   return (
