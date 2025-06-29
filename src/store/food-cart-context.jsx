@@ -1,5 +1,5 @@
 import { useState, useEffect, useReducer, createContext } from 'react';
-import { fetchAvailableMeals } from '../http';
+import { fetchAvailableMeals, addToOrder } from '../http';
 
 export const CartContext = createContext({
   items: [],
@@ -13,6 +13,9 @@ export const CartContext = createContext({
   checkoutModalIsOpen: Boolean,
   handleOpenCheckout: () => {},
   handleCloseCheckout: () => {},
+  customerDetails: {},
+  getCustomerDetails: () => {},
+  submitOrder: () => {},
 });
 
 function foodCartReducer(state, action) {
@@ -73,6 +76,7 @@ export default function CartContextProvider({ children }) {
   const [availableMeals, setAvailableMeals] = useState([]);
   const [cartModalIsOpen, setCartModalIsOpen] = useState(false);
   const [checkoutModalIsOpen, setCheckoutModalIsOpen] = useState(false);
+  const [customerDetails, setCustomerDetails] = useState({});
   const [foodCartState, foodCartDispatch] = useReducer(foodCartReducer, {
     items: [],
   });
@@ -128,6 +132,22 @@ export default function CartContextProvider({ children }) {
     setCheckoutModalIsOpen(false);
   }
 
+  function getCustomerDetails(details) {
+    setCustomerDetails({ ...details });
+  }
+
+  async function submitOrder(details) {
+    const body = {
+      order: {
+        items: foodCartState.items,
+        customer: details,
+      },
+    };
+    console.log(body);
+    const response = await addToOrder(body);
+    console.log(response);
+  }
+
   useEffect(() => {
     setCartTotal(
       foodCartState.items.reduce((total, item) => {
@@ -149,6 +169,9 @@ export default function CartContextProvider({ children }) {
     checkoutModalIsOpen: checkoutModalIsOpen,
     handleOpenCheckout: handleOpenCheckout,
     handleCloseCheckout: handleCloseCheckout,
+    customerDetails: customerDetails,
+    getCustomerDetails: getCustomerDetails,
+    submitOrder: submitOrder,
   };
 
   return (

@@ -10,10 +10,10 @@ export async function fetchAvailableMeals() {
 export async function addToOrder(order) {
   const response = await fetch('http://localhost:3000/orders', {
     method: 'POST',
-    body: JSON.stringify({ order }),
     headers: {
       'Content-type': 'application/json',
     },
+    body: JSON.stringify(order),
   });
   const resData = await response.json();
 

@@ -17,21 +17,29 @@ export default function Header() {
     handleCloseCheckout,
   } = useContext(CartContext);
 
-  let cartModalActions = <button className="text-button">Close</button>;
+  let cartModalActions = (
+    <button className="text-button" onClick={handleCloseCart}>
+      Close
+    </button>
+  );
 
   const checkoutModalActions = (
-    <>
-      <button className="text-button">Close</button>
-      <Button displayText="Submit Order" onClick={handleCloseCheckout} />
-    </>
+    <div className="modal-actions">
+      <button className="text-button" onClick={handleCloseCheckout}>
+        Close
+      </button>
+      <Button type="submit" displayText="Submit Order" />
+    </div>
   );
 
   if (items.length > 0) {
     cartModalActions = (
-      <>
-        <button className="text-button">Close</button>
+      <div className="modal-actions">
+        <button className="text-button" onClick={handleCloseCart}>
+          Close
+        </button>
         <Button displayText="Go to Checkout" onClick={handleOpenCheckout} />
-      </>
+      </div>
     );
   }
   return (
@@ -48,6 +56,7 @@ export default function Header() {
         open={checkoutModalIsOpen}
         title="Checkout"
         actions={checkoutModalActions}
+        onClose={handleCloseCheckout}
       >
         <Checkout />
       </Modal>
